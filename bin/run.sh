@@ -1,24 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-shouldRun=true
-while [ "$shouldRun" = true ]; do
+NAME="hochzehn/$(basename ${PWD})"
 
-    # Load json from RestMQ
-    result=$(curl -s "http://$restmq:8888/q/domains")
+docker build --tag $NAME . > /dev/null
 
-    #Extract domain from json result
-    domain=$(echo "$result" | sed -e 's/^.*"value": "\(.*\)".*$/\1/')
-
-    if [ -z "$domain" ]; then
-        shouldRun=false
-    else
-
-        # Run detectjs
-        detectedjs=$(docker run --rm hochzehn/detectjs "http://$domain")
-
-        if [ -n "$detectedjs" ]; then
-            # Post detectedjs to new RestMQ queue
-            curl -s -X POST -d "value=$detectedjs" "http://$restmq:8888/q/detectedjs"
-        fi
-    fi
-done
+if [ $# -ne 1 ]
+then
+    echo "Usage: bin/run.sh RESTMQ_IP"
+else
+    docker run \
+      --privileged \
+      --rm \
+      -v /var/run/docker.sock:/var/run/docker.sock \
+      -v /usr/local/bin/docker:/usr/local/bin/docker \
+      $NAME \
+      $*
+fi
