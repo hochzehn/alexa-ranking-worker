@@ -2,7 +2,7 @@
 
 ## Usage
 
-  bin/run.sh 127.0.0.1
+    docker run hochzehn/alexa-ranking-worker 127.0.0.1
 
 ## Description
 
