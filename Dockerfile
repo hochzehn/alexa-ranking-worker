@@ -7,7 +7,6 @@ RUN apk add --no-cache \
   curl
 
 ADD ./app /opt/app
-VOLUME ./app/tmp /opt/app/tmp
 
 WORKDIR /opt/app
 
