@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 
+# Allow termination
+_term() {
+  exit 255
+}
+
+trap _term SIGINT SIGTERM
+
 if [ $# -ne 1 ]
 then
     echo "Usage: ./entrypoint.sh RESTMQ_IP"
 else
     restmq=$1
 
-    shouldRun=true
-    while [ "$shouldRun" = true ]; do
-
+    while :
+    do
         # Load json from RestMQ
         result=$(curl -s "http://$restmq:8888/q/domains")
 
@@ -16,7 +22,8 @@ else
         domain=$(echo "$result" | sed -e 's/^.*"value": "\(.*\)".*$/\1/')
 
         if [ -z "$domain" ]; then
-            shouldRun=false
+            # Wait 1 second until next try
+            sleep 1
         else
 
             # Run detectjs
