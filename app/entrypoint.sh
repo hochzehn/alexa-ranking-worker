@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Allow termination
 _term() {
   exit 255
