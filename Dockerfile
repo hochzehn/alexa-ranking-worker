@@ -1,10 +1,6 @@
-FROM alpine:3.3
+FROM node:6.2.0
 
-RUN apk add --no-cache \
-  bash \
-  unzip \
-  parallel \
-  curl
+RUN npm install -g detectjs
 
 ADD ./app /opt/app
 

@@ -29,7 +29,7 @@ else
         else
 
             # Run detectjs
-            detectedjs=$(docker run --rm hochzehn/detectjs "http://$domain")
+            detectedjs=$(detectjs "http://$domain")
 
             if [ -n "$detectedjs" ]; then
                 # Post detectedjs to new RestMQ queue
