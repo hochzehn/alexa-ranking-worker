@@ -38,6 +38,7 @@ do
 
     if [ -z "$domain" ]; then
         # Wait until next try
+        echo -n "z"
         sleep "$seconds_until_next_try"
     else
 
@@ -47,6 +48,7 @@ do
         if [ -n "$detectedjs" ]; then
             # Post detectedjs to new RestMQ queue
             curl -s -X POST -d "value=$detectedjs" "http://$restmq:8888/q/detectedjs"
+            echo -n "."
         fi
     fi
 done
