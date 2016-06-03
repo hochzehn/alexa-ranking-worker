@@ -46,8 +46,10 @@ do
         detectedjs=$(detectjs "http://$domain")
 
         if [ -n "$detectedjs" ]; then
+            # Escape & with %26
+            escaped=$(echo "$detectedjs" | sed -E 's/&/%26/g' )
             # Post detectedjs to new RestMQ queue
-            curl -s -X POST -d "value=$detectedjs" "http://$restmq:8888/q/detectedjs"
+            curl -s -X POST -d "value=$escaped" "http://$restmq:8888/q/detectedjs"
             echo -n "."
         fi
     fi
